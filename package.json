@@ -1,0 +1,29 @@
+{
+  "name": "karapyziki",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./app/server.ts",
+  "engines": {
+    "node": "6.9.4",
+    "npm": "3.10.10"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production ./node_modules/.bin/ts-node ./app/server.ts",
+    "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app/server.ts"
+  },
+  "author": "ts1503",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "7.0.12",
+    "express": "4.15.2",
+    "morgan": "1.8.1",
+    "nest.js": "1.0.0-rc3",
+    "parse-server": "2.3.7",
+    "pug": "2.0.0-beta11",
+    "ts-node": "3.0.2",
+    "typescript": "2.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "1.11.0"
+  }
+}
