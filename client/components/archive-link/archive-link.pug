@@ -1,0 +1,13 @@
+footer.section-padding--sm.footer
+    a.footer__archive(href=site.baseurl + '/archive/')= Архив
+
+    ul.footer__social
+        li
+            a.fa.fa-lg.fa-envelope-o(href='mailto:' + site.email)
+            each social in site.socials
+                li
+                    a.fa.fa-lg(
+                        class='fa-' + social.icon
+                        href=social.link
+                        target="_blank"
+                    )

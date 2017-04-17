@@ -1,0 +1,58 @@
+extends ../../components/layout/layout.pug
+
+mixin post-preview_big(post)
+    li.preview(
+        itemprop="blogPost"
+        itemscope
+        itemtype="http://schema.org/BlogPosting"
+    )
+        a.preview__link(
+            href=site.baseurl + post.url
+            itemprop="url"
+        )
+            span.preview__date(
+                itemprop="datePublished"
+                datetime=post.datePublished
+            )
+                = post.prettyDate
+
+            h2.preview__header(itemprop="name")= post.title
+            p.preview__excerpt(itemprop="description")
+                != post.contentPreview
+            span.preview__more Читать статью
+
+
+mixin paginator
+    if page.total_pages > 1
+        .pagination
+            if page.previous_page
+                a(href=site.baseurl + page.previous_page_path)= Предыдущая
+
+            if page.next_page
+                a(href=site.baseurl + page.next_page_path)= Следующая
+
+block page-content
+    section.previews
+        div
+            each post in page.posts
+                figure.absolute-bg.preview__img(
+                    style={'background-image': 'url(\'#{ post.picture }\')'}
+                )
+
+            .previews__container
+                span Добро пожаловать в
+                h1= site.title
+
+
+        div
+            .tab
+                ul(
+                    itemscope
+                    itemtype="http://schema.org/Blog"
+                )
+                    each post in page.posts
+                        +post-preview_big(post)
+
+                +paginator
+
+                include ../../components/archive-link/archive-link.pug

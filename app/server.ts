@@ -15,13 +15,13 @@ app.listen(env.PORT, () =>
 
 function configureBaseServer() {
     const instance = express();
-    // const parseServer = new ParseServer({
-    //     databaseURI: env.MONGODB_URI,
-    //     serverURL: env.SERVER_URL,
-    //     appId: env.KEYS.APP,
-    //     masterKey: env.KEYS.MASTER,
-    //     javascriptKey: env.KEYS.JS
-    // });
+    const parseServer = new ParseServer({
+        databaseURI: env.MONGODB_URI,
+        serverURL: env.SERVER_URL,
+        appId: env.KEYS.APP,
+        masterKey: env.KEYS.MASTER,
+        javascriptKey: env.KEYS.JS
+    });
 
     // static
     instance.use(express.static('client'));
@@ -30,11 +30,11 @@ function configureBaseServer() {
     instance.use(morgan('common'));
 
     // views engine
-    instance.set('views', resolve('views'));
+    instance.set('views', resolve('client/pages'));
     instance.set('view engine', 'pug');
 
     // parse
-    // instance.use('/parse', parseServer);
+    instance.use('/parse', parseServer);
 
     return instance;
 }
