@@ -1,0 +1,21 @@
+doctype xml
+rss(version='2.0' 'xmlns:atom'='http://www.w3.org/2005/Atom')
+    channel
+        title= site.title
+        description= site.description
+        generator Karapyziki Nodejs Generator Feeds for RSS
+        link= site.baseurl
+        atom:link(
+            href=site.baseurl + '/feed.xml'
+            rel='self'
+            type='application/rss+xml'
+        )
+        pubDate= site.time
+        lastBuildDate= site.time
+        each post in page.posts
+            item
+                title= post.title
+                description= post.content
+                pubDate= post.date
+                link=site.baseurl + post.url
+                guid(isPermaLink='true')= site.baseurl + post.url

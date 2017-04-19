@@ -1,0 +1,42 @@
+extends ../../components/layout/layout.pug
+
+block page-content
+    section.archives(
+        itemscope
+        itemtype='http://schema.org/Blog'
+    )
+        a.nav.nav--black(href=site.baseurl)
+            i.fa.fa-lg.fa-arrow-left
+            span Назад к статьям
+
+        header.archives__header
+            span Архив
+
+        .section-padding.archives__container
+            each post in page.posts
+                article.card(
+                    itemprop='blogPost'
+                    itemscope
+                    itemtype='http://schema.org/BlogPosting'
+                )
+                    a.card__link(
+                        href=site.baseurl + post.url
+                        itemprop='url'
+                    )
+                        .card__img
+                            if post.picture_sm
+                                figure.absolute-bg.wow(
+                                    style={'background-image': 'url(' + post.picture_sm + ')'}
+                                )
+                            else
+                                figure.absolute-bg.wow(
+                                    style={'background-image': 'url(' + post.picture + ')'}
+                                )
+                        .card__container
+                            h2.card__header(itemprop='name')= post.title
+                            p.card__count(
+                                itemprop='datePublished'
+                                datetime=post.datePublished
+                            )
+                                = post.prettyDate
+                            span.card__more Читать статью

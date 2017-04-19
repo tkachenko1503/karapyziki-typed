@@ -1,0 +1,72 @@
+extends ../../components/layout/layout.pug
+
+mixin post-header(post, site)
+    header.section-padding--lg.mast
+        a.nav.nav--white(href=site.baseurl)
+            i.fa.fa-lg.fa-arrow-left
+            span Назад к статьям
+        figure.absolute-bg.mast__img(
+            style={'background-image': 'url(' + post.picture + ')'}
+        )
+        div.mast__container
+            span
+                time(
+                    datetime=post.datePublished
+                    itemprop='datePublished'
+                )
+                    = post.prettyDate
+            h1(itemprop='name headline')= post.title
+            span
+
+
+mixin blogger-profile-card(site)
+    section.profile
+        .profile__card
+            .profile__img
+                figure.absolute-bg(
+                    style={'background-image': 'url(' + site.profile_img + ')'}
+                )
+            .profile__container
+                p= site.profile
+                if site.email || site.social
+                    ul.profile__social
+                        if site.email
+                            li
+                                a.fa.fa-lg.fa-envelope-o(
+                                    href='mailto:' + site.email
+                                )
+
+                        each social in site.socials
+                            li
+                                a.fa.fa-lg(
+                                    class='fa-' + social.icon
+                                    href=social.link
+                                    target='_blank'
+                                )
+
+
+mixin next-post-preview(nextPost, site)
+    section.next
+        a.next__link(
+            href=site.baseurl + nextPost.url
+            style={'background-image': 'url(' + nextPost.picture + ')'}
+        )
+            div.next__container
+                span Читать следущую
+                h2= nextPost.title
+
+
+block page-content
+    article(
+        itemprop='blogPost'
+        itemscope
+        itemtype='http://schema.org/BlogPosting'
+    )
+        +post-header(page.post, site)
+
+        section.section-padding.post(itemprop='articleBody')= page.post.content
+
+        +blogger-profile-card(site)
+
+    if page.nextPost
+        +next-post-preview(page.nextPost, site)

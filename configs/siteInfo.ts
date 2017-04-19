@@ -1,14 +1,12 @@
-export default {
+export const siteInfo = {
     email: 'flydancer@rambler.ru',
-    baseurl: 'http://www.karapyziki.org/',
+    baseurl: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/' : 'http://www.karapyziki.org/',
     paginate: 7,
-    paginate_path: '/blog/page/',
-    google_analytics: '',
+    paginate_path: 'blog/page/',
     title: 'Karapyziki',
     description: '',
-    url: '',
     default_img: '',
-    name: '',
+    name: 'karapyziki',
     profile_img: '/assets/img/k-logo.png',
     profile: `
         Привет, меня зовут Аннета и это мой блог.

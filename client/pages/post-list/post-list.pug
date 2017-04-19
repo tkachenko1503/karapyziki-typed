@@ -1,42 +1,42 @@
 extends ../../components/layout/layout.pug
 
-mixin post-preview_big(post)
+mixin post-preview_big(post, site)
     li.preview(
-        itemprop="blogPost"
+        itemprop='blogPost'
         itemscope
-        itemtype="http://schema.org/BlogPosting"
+        itemtype='http://schema.org/BlogPosting'
     )
         a.preview__link(
             href=site.baseurl + post.url
-            itemprop="url"
+            itemprop='url'
         )
             span.preview__date(
-                itemprop="datePublished"
+                itemprop='datePublished'
                 datetime=post.datePublished
             )
                 = post.prettyDate
 
-            h2.preview__header(itemprop="name")= post.title
-            p.preview__excerpt(itemprop="description")
-                != post.contentPreview
+            h2.preview__header(itemprop='name')= post.title
+            p.preview__excerpt(itemprop='description') !{post.contentPreview}
             span.preview__more Читать статью
 
 
-mixin paginator
-    if page.total_pages > 1
+mixin paginator(pager, site)
+    if pager.total_pages > 1
         .pagination
-            if page.previous_page
-                a(href=site.baseurl + page.previous_page_path)= Предыдущая
+            if pager.previous_page
+                a(href=site.baseurl + pager.previous_page_path) Предыдущая
 
-            if page.next_page
-                a(href=site.baseurl + page.next_page_path)= Следующая
+            if pager.next_page
+                a(href=site.baseurl + pager.next_page_path) Следующая
+
 
 block page-content
     section.previews
         div
             each post in page.posts
                 figure.absolute-bg.preview__img(
-                    style={'background-image': 'url(\'#{ post.picture }\')'}
+                    style={'background-image': 'url(' + post.picture + ')'}
                 )
 
             .previews__container
@@ -48,11 +48,11 @@ block page-content
             .tab
                 ul(
                     itemscope
-                    itemtype="http://schema.org/Blog"
+                    itemtype='http://schema.org/Blog'
                 )
                     each post in page.posts
-                        +post-preview_big(post)
+                        +post-preview_big(post, site)
 
-                +paginator
+                +paginator(page.paginator, site)
 
                 include ../../components/archive-link/archive-link.pug

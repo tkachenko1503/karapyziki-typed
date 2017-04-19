@@ -15,9 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "7.0.12",
+    "body-parser": "1.17.1",
     "express": "4.15.2",
     "morgan": "1.8.1",
-    "nest.js": "1.0.0-rc3",
+    "nest.js": "1.0.0-rc8",
     "parse-server": "2.3.7",
     "pug": "2.0.0-beta11",
     "ts-node": "3.0.2",

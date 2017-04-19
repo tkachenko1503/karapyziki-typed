@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import * as express from 'express';
 import * as morgan from 'morgan';
+import * as bodyParser from 'body-parser';
 import { NestFactory } from 'nest.js';
 import { ParseServer } from 'parse-server';
 import env from '../configs/env';
@@ -32,6 +33,9 @@ function configureBaseServer() {
     // views engine
     instance.set('views', resolve('client/pages'));
     instance.set('view engine', 'pug');
+
+    // body parser
+    instance.use(bodyParser.json());
 
     // parse
     instance.use('/parse', parseServer);
