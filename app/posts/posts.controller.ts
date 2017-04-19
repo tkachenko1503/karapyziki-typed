@@ -1,11 +1,7 @@
 import { Controller, Get } from 'nest.js';
 import { SiteInfoService } from '../site/siteInfo.service';
 import { PostsService } from './posts.service';
-
-interface PageData {
-    site: object,
-    page: object,
-}
+import { PageData } from '../types';
 
 @Controller()
 export class PostsController {
@@ -34,36 +30,6 @@ export class PostsController {
         };
 
         res.render('post-list/post-list', pageData);
-    }
-
-    @Get('/archive')
-    async archivePage(req, res, next) {
-        const siteInfo = await this.siteInfoService.getSiteInfo();
-        const posts = await this.postsService.getPagedPosts();
-
-        const pageData :PageData = {
-            site: siteInfo,
-            page: {
-                posts
-            }
-        };
-
-        res.render('archive/archive', pageData);
-    }
-
-    @Get('/feed.xml')
-    async feedPage(req, res, next) {
-        const siteInfo = await this.siteInfoService.getSiteInfo();
-        const posts = await this.postsService.getPagedPosts();
-
-        const pageData :PageData = {
-            site: siteInfo,
-            page: {
-                posts
-            }
-        };
-
-        res.render('feed/feed', pageData);
     }
 
     @Get('/post/:postId')
