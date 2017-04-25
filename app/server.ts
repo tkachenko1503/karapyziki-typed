@@ -15,7 +15,7 @@ app.listen(env.PORT, () =>
 
 
 function configureBaseServer() {
-    const instance = express();
+    const server = express();
     const parseServer = new ParseServer({
         databaseURI: env.MONGODB_URI,
         serverURL: env.SERVER_URL,
@@ -25,20 +25,20 @@ function configureBaseServer() {
     });
 
     // static
-    instance.use(express.static('client'));
+    server.use(express.static('client'));
 
     // logger
-    instance.use(morgan('common'));
+    server.use(morgan('common'));
 
     // views engine
-    instance.set('views', resolve('client/pages'));
-    instance.set('view engine', 'pug');
+    server.set('views', resolve('client/pages'));
+    server.set('view engine', 'pug');
 
     // body parser
-    instance.use(bodyParser.json());
+    server.use(bodyParser.json());
 
     // parse
-    instance.use('/parse', parseServer);
+    server.use('/parse', parseServer);
 
-    return instance;
+    return server;
 }

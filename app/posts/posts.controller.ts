@@ -12,8 +12,9 @@ export class PostsController {
 
     @Get('/')
     async postsListPage(req, res, next) {
+        const { page = 1 } = req.query;
         const siteInfo = await this.siteInfoService.getSiteInfo();
-        const posts = await this.postsService.getPagedPosts();
+        const posts = await this.postsService.getPagedPosts(page);
 
         const pageData :PageData = {
             site: siteInfo,
