@@ -16,6 +16,10 @@ export class PostsController {
         const siteInfo = await this.siteInfoService.getSiteInfo();
         const posts = await this.postsService.getPagedPosts(page);
 
+        if (!posts.length) {
+            return res.redirect('/404');
+        }
+
         const pageData :PageData = {
             site: siteInfo,
             page: {
@@ -37,7 +41,14 @@ export class PostsController {
     async postDetailsPage(req, res, next) {
         const postId = req.params.postId;
         const siteInfo = await this.siteInfoService.getSiteInfo();
-        const post = await this.postsService.getSinglePost(postId);
+        let post;
+
+        try {
+            post = await this.postsService.getSinglePost(postId);
+        } catch (error) {
+            // @todo check error type
+            return res.redirect('/404');
+        }
 
         const pageData :PageData = {
             site: siteInfo,

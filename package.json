@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "7.0.12",
+    "@types/parse": "1.9.0",
     "body-parser": "1.17.1",
     "express": "4.15.2",
     "morgan": "1.8.1",

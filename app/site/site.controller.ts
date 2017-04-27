@@ -13,7 +13,7 @@ export class SiteController {
     @Get('/archive')
     async archivePage(req, res, next) {
         const siteInfo = await this.siteInfoService.getSiteInfo();
-        const posts = await this.postsService.getPagedPosts();
+        const posts = await this.postsService.getPagedPosts(1, 20);
 
         const pageData :PageData = {
             site: siteInfo,
@@ -28,7 +28,7 @@ export class SiteController {
     @Get('/feed.xml')
     async feedPage(req, res, next) {
         const siteInfo = await this.siteInfoService.getSiteInfo();
-        const posts = await this.postsService.getPagedPosts();
+        const posts = await this.postsService.getPagedPosts(1, 20);
 
         const pageData :PageData = {
             site: siteInfo,
@@ -41,5 +41,16 @@ export class SiteController {
             res.set('Content-Type', 'application/xml');
             res.send(xml);
         });
+    }
+
+    @Get('/404')
+    async notFoundPage(req, res, next) {
+        const siteInfo = await this.siteInfoService.getSiteInfo();
+        const pageData :PageData = {
+            site: siteInfo,
+            page: {}
+        };
+
+        res.render('not-found/not-found', pageData);
     }
 }

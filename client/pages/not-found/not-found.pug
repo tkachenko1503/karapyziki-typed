@@ -1,0 +1,9 @@
+extends ../../components/layout/layout.pug
+
+block page-css
+    link(rel='stylesheet', href='/assets/css/not-found.css')
+
+block page-content
+    .not-found
+        h1 Кажется, такой страницы не существует!
+        a.back-to-main(href=site.baseurl) Вернуться на главную
