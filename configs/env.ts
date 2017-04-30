@@ -12,5 +12,15 @@ export default {
         APP: process.env.APP_KEY,
         MASTER: process.env.MASTER_KEY,
         JS: process.env.JS_KEY
+    },
+    FLICKR: {
+        CONSUMER: {
+            KEY: process.env.FLICKR_CONSUMER_KEY,
+            SECRET: process.env.FLICKR_CONSUMER_SECRET
+        },
+        TOKEN: {
+            KEY: process.env.FLICKR_TOKEN_KEY,
+            SECRET: process.env.FLICKR_TOKEN_SECRET
+        }
     }
 };

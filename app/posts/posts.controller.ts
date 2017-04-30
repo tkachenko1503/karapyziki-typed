@@ -1,4 +1,4 @@
-import { Controller, Get } from 'nest.js';
+import { Controller, Get, Post } from 'nest.js';
 import { SiteInfoService } from '../site/siteInfo.service';
 import { PostsService } from './posts.service';
 import { PageData } from '../types';
@@ -11,7 +11,7 @@ export class PostsController {
     ) {}
 
     @Get('/')
-    async postsListPage(req, res, next) {
+    async postsListPage(req, res) {
         const { page = 1 } = req.query;
         const siteInfo = await this.siteInfoService.getSiteInfo();
         const posts = await this.postsService.getPagedPosts(page);
@@ -38,7 +38,7 @@ export class PostsController {
     }
 
     @Get('/post/:postId')
-    async postDetailsPage(req, res, next) {
+    async postDetailsPage(req, res) {
         const postId = req.params.postId;
         const siteInfo = await this.siteInfoService.getSiteInfo();
         let post;
@@ -59,5 +59,19 @@ export class PostsController {
         };
 
         res.render('post-details/post-details', pageData);
+    }
+
+    @Post('post/new')
+    async createNewPost(req, res) {
+        const postData = req.body.post;
+        const picture = req.buffer;
+        const post = await this.postsService.createPost(postData, picture);
+
+        res
+            .status(201)
+            .json({
+                success: true,
+                id: post.id
+            });
     }
 }

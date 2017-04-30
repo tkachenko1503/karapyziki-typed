@@ -2,6 +2,7 @@ import { resolve } from 'path';
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as bodyParser from 'body-parser';
+import * as multer from 'multer';
 import { NestFactory } from 'nest.js';
 import { ParseServer } from 'parse-server';
 import env from '../configs/env';
@@ -15,6 +16,9 @@ app.listen(env.PORT, () =>
 
 
 function configureBaseServer() {
+    const upload = multer({
+        storage: multer.memoryStorage()
+    });
     const server = express();
     const parseServer = new ParseServer({
         databaseURI: env.MONGODB_URI,
@@ -36,6 +40,9 @@ function configureBaseServer() {
 
     // body parser
     server.use(bodyParser.json());
+
+    // file uploads
+    server.use(upload.single('picture'));
 
     // parse
     server.use('/parse', parseServer);
