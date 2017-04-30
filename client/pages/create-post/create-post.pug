@@ -1,0 +1,15 @@
+extends ../../components/layout/layout.pug
+
+include ../../components/create-post-form/create-post-form.pug
+
+block page-css
+    link(rel='stylesheet', href='/assets/css/trumbowyg.min.css')
+
+block page-js
+    script(type='text/javascript', src='/assets/js/trumbowyg/trumbowyg.min.js')
+    script(type='text/javascript', src='/assets/js/trumbowyg/langs/ru.min.js')
+    script(type='text/javascript', src='/components/create-post-form/create-post-form.js')
+
+block page-content
+    .create-post-page
+        +create-post-form

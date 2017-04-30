@@ -7,14 +7,16 @@ export class PicturesService {
     savePicture(picture): Parse.Promise<any> {
         const pictureRequest = new Parse.Promise();
 
-        flickr.upload(picture, (error, pictureId) => {
+        flickr.upload(picture.buffer, (error, pictureId) => {
             if (error) {
                 pictureRequest.reject(error);
+                return;
             }
 
             flickr.getInfo(pictureId, (error, pictureInfo) => {
                 if (error) {
                     pictureRequest.reject(error);
+                    return;
                 }
 
                 pictureRequest.resolve(pictureInfo);

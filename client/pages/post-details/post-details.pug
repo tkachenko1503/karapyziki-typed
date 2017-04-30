@@ -61,7 +61,7 @@ block page-content
         itemprop='blogPost'
         itemscope
         itemtype='http://schema.org/BlogPosting'
-    )
+    ).post-details-page
         +post-header(page.post, site)
 
         section.section-padding.post(itemprop='articleBody')= page.post.content

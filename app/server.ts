@@ -5,11 +5,14 @@ import * as bodyParser from 'body-parser';
 import * as multer from 'multer';
 import { NestFactory } from 'nest.js';
 import { ParseServer } from 'parse-server';
+import * as moment from 'moment';
 import env from '../configs/env';
 import { MainModule } from './main/main.module';
 
 const instance = configureBaseServer();
 const app = NestFactory.create(MainModule, instance);
+
+moment.locale('ru');
 
 app.listen(env.PORT, () =>
     console.log(`Application is listening on port ${env.PORT}`));
@@ -38,11 +41,12 @@ function configureBaseServer() {
     server.set('views', resolve('client/pages'));
     server.set('view engine', 'pug');
 
-    // body parser
-    server.use(bodyParser.json());
-
     // file uploads
-    server.use(upload.single('picture'));
+    server.use(upload.any());
+
+    // body parser
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(bodyParser.json());
 
     // parse
     server.use('/parse', parseServer);

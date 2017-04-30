@@ -1,0 +1,38 @@
+mixin create-post-form
+    .create-post-form
+        .messages
+
+        form
+            fieldset
+                legend Создать новый пост
+
+                .form-row
+                    label(for='postPicture') Изображение
+                    input(
+                        id='postPicture'
+                        name='postPicture'
+                        type='file'
+                    )
+
+                .form-row
+                    label(for='postTitle') Название
+                    input(
+                        id='postTitle'
+                        name='postTitle'
+                        type='text'
+                    )
+
+                .form-row
+                    label() Содержание
+                    #postContent
+
+                .form-row
+                    label(for='postPublishDate') Дата создания
+                    input(
+                        id='postPublishDate'
+                        name='postPublishDate'
+                        type='date'
+                    )
+
+                .form-row
+                    button(type='submit') Сохранить

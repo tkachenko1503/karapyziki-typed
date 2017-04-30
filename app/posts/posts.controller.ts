@@ -37,6 +37,35 @@ export class PostsController {
         res.render('post-list/post-list', pageData);
     }
 
+    @Get('/post/new')
+    async createPostPage(req, res) {
+        const siteInfo = await this.siteInfoService.getSiteInfo();
+        const pageData :PageData = {
+            site: siteInfo,
+            page: {}
+        };
+
+        res.render('create-post/create-post', pageData);
+    }
+
+    @Post('/post/new')
+    async createNewPost(req, res) {
+        const postData = {
+            title: req.body.postTitle,
+            content: req.body.postContent,
+            datePublished: new Date(req.body.postPublishDate)
+        };
+        const picture = req.files[0];
+        const post = await this.postsService.createPost(postData, picture);
+
+        res
+            .status(201)
+            .json({
+                success: true,
+                id: post.id
+            });
+    }
+
     @Get('/post/:postId')
     async postDetailsPage(req, res) {
         const postId = req.params.postId;
@@ -59,19 +88,5 @@ export class PostsController {
         };
 
         res.render('post-details/post-details', pageData);
-    }
-
-    @Post('post/new')
-    async createNewPost(req, res) {
-        const postData = req.body.post;
-        const picture = req.buffer;
-        const post = await this.postsService.createPost(postData, picture);
-
-        res
-            .status(201)
-            .json({
-                success: true,
-                id: post.id
-            });
     }
 }
