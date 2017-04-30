@@ -11,6 +11,9 @@ const cutPreview = text =>
         .slice(0, 30)
         .join(' ');
 
+const makePictureUrl = ({ farm, server, id, secret }) =>
+        `https://c2.staticflickr.com/${farm}/${server}/${id}_${secret}.jpg`;
+
 @Component()
 export class PostsService {
     constructor(
@@ -39,12 +42,12 @@ export class PostsService {
 
         this.picturesService
             .savePicture(picture)
-            .then(picture => post.save({
+            .then(pictureInfo => post.save({
                 contentPreview: cutPreview(data.content),
                 content: data.content,
                 datePublished: data.datePublished,
                 title: data.title,
-                picture: picture.url
+                picture: makePictureUrl(pictureInfo)
             }))
             .then(postRequest.resolve, postRequest.reject);
 
