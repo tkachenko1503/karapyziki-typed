@@ -14,8 +14,8 @@ const cutPreviewText = text =>
 const makePictureUrl = ({ farm, server, id, secret }) =>
         `https://c2.staticflickr.com/${farm}/${server}/${id}_${secret}.jpg`;
 
-const postView = (post): PostView => post.view();
-const postViewCollection = (posts): PostView[] => posts.map(postView);
+export const postView = (post): PostView => post.view();
+export const postViewCollection = (posts): PostView[] => posts.map(postView);
 
 @Component()
 export class PostsService {
@@ -30,24 +30,22 @@ export class PostsService {
         return query
             .limit(limit)
             .skip(skip)
-            .find()
-            .then(postViewCollection);
+            .find();
     }
 
     getSinglePost(postId: string) {
         const query = new Parse.Query(PostModel);
 
         return query
-            .get(postId)
-            .then(postView);
+            .get(postId);
     }
 
-    createPost(data: PostData, picture: object): Parse.Promise<PostModel> {
+    createPost(data: PostData): Parse.Promise<PostModel> {
         const post = new PostModel();
         const postRequest = new Parse.Promise();
 
         this.picturesService
-            .savePicture(picture)
+            .savePicture(data.picture)
             .then(pictureInfo => post.save({
                 contentPreview: cutPreviewText(data.content),
                 content: data.content,
@@ -61,5 +59,42 @@ export class PostsService {
             );
 
         return postRequest;
+    }
+
+    updatePost(postId: string, data: PostData): Parse.Promise<PostModel> {
+        const updateRequest = new Parse.Promise();
+        const tasks = [this.getSinglePost(postId)];
+
+        if (data.picture) {
+            tasks.push(this.picturesService.savePicture(data.picture));
+        }
+
+        Parse.Promise.when(tasks)
+            .then(([post, pictureInfo]) => {
+                if (data.content) {
+                    post.set('contentPreview', cutPreviewText(data.content));
+                    post.set('content', data.content);
+                }
+
+                if (data.datePublished) {
+                    post.set('datePublished', data.datePublished);
+                }
+
+                if (data.title) {
+                    post.set('title', data.title);
+                }
+
+                if (pictureInfo) {
+                    post.set('picture', makePictureUrl(pictureInfo));
+                }
+
+                return post.save();
+            })
+            .then(
+                post => updateRequest.resolve(post),
+                error => updateRequest.reject(error)
+            );
+
+        return updateRequest;
     }
 }

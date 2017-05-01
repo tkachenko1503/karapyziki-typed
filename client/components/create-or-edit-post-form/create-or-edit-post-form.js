@@ -2,9 +2,14 @@ $(function () {
     var SUCCESS_MESSAGE = 'Материал сохранён успешно';
     var FAIL_MESSAGE = 'Что то пошло не так! Попробуйте сохранить еще разок';
 
-    var postForm = $('.create-post-form form');
+    var formBlock = $('.create-or-edit-post-form');
+    var formParams = formBlock.data('params');
+    var postForm = $('.create-or-edit-post-form form');
     var postContentEditor = $('#postContent');
-    var messagesContainer = $('.create-post-form .messages');
+    var messagesContainer = $('.create-or-edit-post-form .messages');
+
+    var actionUrl = formParams.isCreateForm ? '/admin/post/new' : '/admin/post/' + formParams.postId + '/update';
+    var actionType = formParams.isCreateForm ? 'POST' : 'PUT';
 
     // init editor
     postContentEditor.trumbowyg({
@@ -20,8 +25,8 @@ $(function () {
         event.preventDefault();
 
         $.ajax({
-            url: '/post/new',
-            type: 'POST',
+            url: actionUrl,
+            type: actionType,
             data: formData,
             cache: false,
             contentType: false,

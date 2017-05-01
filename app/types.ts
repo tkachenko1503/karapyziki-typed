@@ -6,15 +6,18 @@ export type PageData = {
 export type PostData = {
     content: string,
     datePublished: Date,
-    title: string
+    title: string,
+    picture: object
 };
 
 export type PostView = {
+    id: string,
     title: string,
     content: string,
     contentPreview: string,
     picture: string,
     datePublished: string,
     prettyDate: string,
+    inputDate: string,
     url: string
 };

@@ -6,25 +6,12 @@ html(lang='ru')
         meta(http-equiv='X-UA-Compatible', content='IE=edge')
         meta(name='viewport', content='width=device-width, initial-scale=1')
 
-        - var title = page.title ? page.title + ' | ' + site.title : site.title;
-
-        title= title
-
-        meta(name='author', content=site.name)
-        meta(name='description', content=site.description)
-        meta(property='og:title', content=title)
-        meta(property='og:url', content=page.url)
-        meta(property='og:site_name', content=site.title)
-        meta(property='og:description', content=page.description)
-        meta(property='og:image', content=page.image)
-        meta(property='og:type', content='blog')
+        title Админ панель
 
         link(href='https://fonts.googleapis.com/css?family=Kurale', rel='stylesheet')
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css')
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css')
         link(rel='stylesheet', href='/assets/css/main.css')
-        link(rel='alternate', type='application/rss+xml', title=site.title, href='/feed.xml')
-        link(rel='canonical', href=page.url)
 
         block page-css
 
@@ -37,7 +24,5 @@ html(lang='ru')
             integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='
             crossorigin='anonymous'
         )
-        script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js')
-        script(type='text/javascript', src='/assets/js/app.js')
 
         block page-js

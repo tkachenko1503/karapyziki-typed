@@ -1,10 +1,26 @@
-mixin create-post-form
-    .create-post-form
+mixin create-or-edit-post-form(post)
+    - var isCreateForm = post === void 0;
+    - var post = post || {};
+
+    .create-or-edit-post-form(
+        data-params=JSON.stringify({isCreateForm: isCreateForm, postId: post.id})
+    )
         .messages
 
         form
             fieldset
-                legend Создать новый пост
+                - var actionTitle = isCreateForm ? 'Создать новый' : 'Редактировать';
+
+                legend #{actionTitle} пост
+
+                unless isCreateForm
+                    .form-row
+                        img(
+                            src=post.picture
+                            width=100
+                            style={width: '200px!important'}
+                        )
+
 
                 .form-row
                     label(for='postPicture') Изображение
@@ -20,11 +36,12 @@ mixin create-post-form
                         id='postTitle'
                         name='postTitle'
                         type='text'
+                        value=post.title
                     )
 
                 .form-row
                     label() Содержание
-                    #postContent
+                    #postContent= post.content
 
                 .form-row
                     label(for='postPublishDate') Дата создания
@@ -32,6 +49,7 @@ mixin create-post-form
                         id='postPublishDate'
                         name='postPublishDate'
                         type='date'
+                        value=post.inputDate
                     )
 
                 .form-row
