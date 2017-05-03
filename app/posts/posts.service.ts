@@ -43,15 +43,21 @@ export class PostsService {
     createPost(data: PostData): Parse.Promise<PostModel> {
         const post = new PostModel();
         const postRequest = new Parse.Promise();
+        let task;
 
-        this.picturesService
-            .savePicture(data.picture)
+        if (data.picture) {
+            task = this.picturesService.savePicture(data.picture);
+        } else {
+            task = Parse.Promise.as(null);
+        }
+
+        task
             .then(pictureInfo => post.save({
                 contentPreview: cutPreviewText(data.content),
                 content: data.content,
                 datePublished: data.datePublished,
                 title: data.title,
-                picture: makePictureUrl(pictureInfo)
+                picture: pictureInfo ? makePictureUrl(pictureInfo) : void 0
             }))
             .then(
                 post => postRequest.resolve(post),
@@ -96,5 +102,13 @@ export class PostsService {
             );
 
         return updateRequest;
+    }
+
+    deletePost(postId: string) {
+        const post = new PostModel();
+
+        post.id = postId;
+
+        return post.destroy();
     }
 }

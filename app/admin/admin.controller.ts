@@ -1,10 +1,6 @@
-import { Controller, Get, Post, Put } from 'nest.js';
-import { PostsService, postView } from '../posts/posts.service';
-// import { SiteInfoService } from '../site/siteInfo.service';
-// import { PageData } from '../types';
-
-const postPublishToDate = (publish): number[] =>
-    publish.split('-').map(str => Number(str));
+import { Controller, Get, Post, Put, Delete } from 'nest.js';
+import * as moment from 'moment';
+import { PostsService, postView, postViewCollection } from '../posts/posts.service';
 
 @Controller({ path: 'admin' })
 export class AdminController {
@@ -14,28 +10,40 @@ export class AdminController {
 
     @Get('/')
     async rootAdminPage(req, res) {
-        res.render('admin-root/admin-root');
+        const { page = 1 } = req.query;
+        const posts = await this.postsService.getPagedPosts(page, 50);
+
+        res.render('admin-root/admin-root', { posts: postViewCollection(posts) });
     }
 
-    @Get('/post/new')
+    @Get('/post')
     async createPostPage(req, res) {
         res.render('create-post/create-post');
     }
 
-    @Post('/post/new')
+    @Post('/post')
     async createNewPost(req, res) {
         const postPublishDate = req.body.postPublishDate;
-        const datePublished = postPublishDate ? postPublishToDate(postPublishDate) : [];
+        const datePublished = postPublishDate ? moment.utc(postPublishDate) : moment.utc();
 
         const postData = {
             title: req.body.postTitle,
             content: req.body.postContent,
-            datePublished: datePublished.length
-                ? new Date(datePublished[0], datePublished[1], datePublished[2])
-                : new Date(),
+            datePublished: datePublished.toDate(),
             picture: req.files[0]
         };
-        const post = await this.postsService.createPost(postData);
+
+        let post;
+
+        try {
+            post = await this.postsService.createPost(postData);
+        } catch (error) {
+            return res
+                .status(500)
+                .end({
+                    message: `Cant create post! Reason - ${error.message}`
+                });
+        }
 
         res
             .status(201)
@@ -45,7 +53,7 @@ export class AdminController {
             });
     }
 
-    @Get('/post/:postId/update')
+    @Get('/post/:postId')
     async editPostPage(req, res) {
         const postId = req.params.postId;
 
@@ -61,18 +69,16 @@ export class AdminController {
         res.render('edit-post/edit-post', { post: postView(post) });
     }
 
-    @Put('/post/:postId/update')
+    @Put('/post/:postId')
     async updatePost(req, res) {
         const postId = req.params.postId;
         const postPublishDate = req.body.postPublishDate;
-        const datePublished = postPublishDate ? postPublishToDate(postPublishDate) : [];
+        const datePublished = postPublishDate ? moment.utc(postPublishDate) : moment.utc();
 
         const postData = {
             title: req.body.postTitle,
             content: req.body.postContent,
-            datePublished: datePublished.length
-                ? new Date(datePublished[0], datePublished[1] - 1, datePublished[2])
-                : new Date(),
+            datePublished: datePublished.toDate(),
             picture: req.files[0]
         };
 
@@ -90,10 +96,32 @@ export class AdminController {
         }
 
         res
-            .status(201)
+            .status(200)
             .json({
                 success: true,
                 id: post.id
+            });
+    }
+
+    @Delete('/post/:postId')
+    async deletePost(req, res) {
+        const postId = req.params.postId;
+
+        try {
+            await this.postsService.deletePost(postId);
+        } catch (error) {
+            return res
+                .status(500)
+                .end({
+                    message: `Cant delete post! Reason - ${error.message}`
+                });
+        }
+
+        res
+            .status(200)
+            .json({
+                success: true,
+                id: postId
             });
     }
 }

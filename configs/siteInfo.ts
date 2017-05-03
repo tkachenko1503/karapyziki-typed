@@ -1,6 +1,6 @@
 export const siteInfo = {
     email: 'flydancer@rambler.ru',
-    baseurl: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/' : 'http://www.karapyziki.org/',
+    baseurl: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/' : process.env.SERVER_URL,
     paginate: 7,
     paginate_path: 'blog/page/',
     title: 'Karapyziki',

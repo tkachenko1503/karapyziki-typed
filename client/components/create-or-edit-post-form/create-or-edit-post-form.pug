@@ -41,7 +41,7 @@ mixin create-or-edit-post-form(post)
 
                 .form-row
                     label() Содержание
-                    #postContent= post.content
+                    #postContent!= post.content
 
                 .form-row
                     label(for='postPublishDate') Дата создания

@@ -64,7 +64,7 @@ block page-content
     ).post-details-page
         +post-header(page.post, site)
 
-        section.section-padding.post(itemprop='articleBody')= page.post.content
+        section.section-padding.post(itemprop='articleBody')!= page.post.content
 
         +blogger-profile-card(site)
 

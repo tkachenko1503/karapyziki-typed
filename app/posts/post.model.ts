@@ -9,7 +9,7 @@ export class PostModel extends Parse.Object {
 
     view(): PostView {
         const { title, content, datePublished, contentPreview, picture } = this.toJSON();
-        const published = moment(datePublished.iso);
+        const published = moment.utc(datePublished.iso);
 
         return {
             id: this.id,

@@ -3,4 +3,11 @@ extends ../../components/admin-layout/admin-layout.pug
 
 block page-content
     ul
-        li: a(href='/admin/post/new') Создать новый пост
+        li: h2: a(href='/admin/post') Создать новый пост
+
+    div
+        h2 Редактировать:
+
+        ul(style={'margin-left': '50px'})
+            each post in posts
+                li: a(href='/admin/post/' + post.id) - #{post.title}

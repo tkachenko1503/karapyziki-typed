@@ -4,11 +4,12 @@ $(function () {
 
     var formBlock = $('.create-or-edit-post-form');
     var formParams = formBlock.data('params');
+
     var postForm = $('.create-or-edit-post-form form');
     var postContentEditor = $('#postContent');
     var messagesContainer = $('.create-or-edit-post-form .messages');
 
-    var actionUrl = formParams.isCreateForm ? '/admin/post/new' : '/admin/post/' + formParams.postId + '/update';
+    var actionUrl = formParams.isCreateForm ? '/admin/post' : '/admin/post/' + formParams.postId;
     var actionType = formParams.isCreateForm ? 'POST' : 'PUT';
 
     // init editor
@@ -66,7 +67,11 @@ $(function () {
     }
 
     function showSuccessMessage() {
-        showMessage('success', SUCCESS_MESSAGE);
+        if (formParams.isCreateForm) {
+            showMessage('success', SUCCESS_MESSAGE);
+        } else {
+            window.location.assign('/admin');
+        }
     }
 
     function showFailMessage() {
